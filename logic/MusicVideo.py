@@ -82,7 +82,10 @@ class MusicVideo:
         Database.delete_playlist(self)
 
     def __str__(self):
-        return f"{self.__title} by {self.__artist}: {self.__url}. {self.__note}"
+        return f"{self.__title} by {self.__artist}: {self.__url}. {self.__note}."
+
+    def to_html(self):
+        return f"<a href='{self.__url}'>{self.__title}</a>, {self.__artist} - {self.__note}."
 
     @staticmethod
     def get_videos():

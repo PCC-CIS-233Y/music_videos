@@ -26,4 +26,8 @@ class PerformanceVideo(MusicVideo):
 
     def __str__(self):
         s = super().__str__()
-        return s + f" at {self.__location} on {self.__performance_date}"
+        return s + f" in {self.__location}, date: {self.__performance_date}"
+
+    def to_html(self):
+        html = super().to_html()
+        return html + f" A performance in {self.__location}, date: {self.__performance_date}"

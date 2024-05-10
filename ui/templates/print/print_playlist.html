@@ -1,0 +1,13 @@
+{% extends "default.html" %}
+{% block title %}{{ playlist.get_name() }} Playlist{% endblock %}
+{% block header %}{{ playlist.get_name() }} Playlist{% endblock %}
+{% block content %}
+<img src="{{ playlist.get_thumbnail() }}">
+<p>{{ playlist.get_description() }}</p>
+<h2>Videos in this playlist:</h2>
+<ul>
+{% for video in playlist %}
+<li>{{ video.to_html()|safe }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

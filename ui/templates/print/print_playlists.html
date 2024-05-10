@@ -1,0 +1,10 @@
+{% extends "default.html" %}
+{% block title %}Print Playlists{% endblock %}
+{% block header %}All Playlists:{% endblock %}
+{% block content %}
+<ul>
+    {% for playlist in playlists %}
+        <li><a href="/print_playlist?playlist={{ playlist.get_key() }}">{{ playlist.get_name() }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
