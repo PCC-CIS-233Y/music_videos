@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from logic.PlayList import PlayList
-from logic.MusicVideo import MusicVideo
+
 
 class WebUI:
     __all_videos = None
@@ -9,10 +9,12 @@ class WebUI:
     MENU = {
         "Print": {
             "print_playlist?playlist=All%20Videos": "Print a list of all videos.",
-            "print_playlists": "Print a list of all playlists."
+            "print_playlists": "Print a list of all playlists.",
+            "show_playlist_contents": "Select a playlist and show the contents."
         },
         "Create": {
-            "create_video": "Create a new video.",
+            "create_music_video": "Create a new music video.",
+            "create_performance_video": "Create a new performance video.",
             "create_playlist": "Create a new playlist.",
             "join_playlists": "Join two playlists together."
         },
@@ -28,46 +30,51 @@ class WebUI:
     }
 
     @classmethod
+    def get_app(cls):
+        return cls.__app
+
+    @classmethod
+    def get_all_playlists(cls):
+        return cls.__all_playlists
+
+    @classmethod
+    def get_all_videos(cls):
+        return cls.__all_videos
+
+    @classmethod
     def init(cls):
         cls.__all_videos, cls.__all_playlists = PlayList.read_data()
 
+    @classmethod
+    def validate_field(cls, object_name, field_name):
+        if field_name not in request.form:
+            return None, render_template(
+                "error.html",
+                message_header=f"{object_name} was not specified!",
+                message_body=f"{object_name} was not specified. Please check the form and try again."
+            )
+        field_value = request.form[field_name].strip()
+        if field_value == "":
+            return None, render_template(
+                "error.html",
+                message_header=f"{object_name} was not specified!",
+                message_body=f"{object_name} was not specified. Please check the form and try again."
+            )
+        return field_value, None
+
+    @staticmethod
     @__app.route('/')
     @__app.route('/index')
     @__app.route('/index.html')
     @__app.route('/index.php')
-    @staticmethod
     def homepage():
         return render_template("homepage.html", options=WebUI.MENU)
 
-    @__app.route('/print_playlists')
-    @staticmethod
-    def print_playlists():
-        return render_template("print/print_playlists.html", playlists=WebUI.__all_playlists)
-
-    @__app.route('/print_playlist')
-    @staticmethod
-    def print_playlist():
-        if "playlist" not in request.args:
-            return render_template(
-                "error.html",
-                message_header="Playlist not specified!",
-                message_body="No playlist was specified. Please check the URL and try again."
-            )
-        key = request.args["playlist"]
-        playlist = PlayList.lookup(key)
-        if playlist is None:
-            return render_template(
-                "error.html",
-                message_header="Playlist not found!",
-                message_body=f"The Playlist named '{key}' was not found. Please check the URL and try again."
-            )
-        return render_template("print/print_playlist.html", playlist=playlist)
-
     @classmethod
     def run(cls):
-        cls.__app.run(port=8000)
+        from ui.PrintRoutes import PrintRoutes
+        from ui.CreateRoutes import CreateRoutes
+        from ui.UpdateRoutes import UpdateRoutes
+        from ui.DeleteRoutes import DeleteRoutes
 
-
-if __name__ == '__main__':
-    WebUI.init()
-    WebUI.run()
+        cls.__app.run(host="0.0.0.0", port=8000)

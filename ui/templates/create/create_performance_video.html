@@ -1,0 +1,17 @@
+{% extends "default.html" %}
+{% block title %}Create New Performance Video{% endblock %}
+{% block header %}Please enter the information for a new performance video in the form below:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_create_performance_video">
+    <table class="data_entry_form">
+        <tr><th><label>Artist:</label></th><td><input type="text" name="artist"></td></tr>
+        <tr><th><label>Title:</label></th><td><input type="text" name="title"></td></tr>
+        <tr><th><label>URL:</label></th><td><input type="text" name="url"></td></tr>
+        <tr><th><label>Year:</label></th><td><input type="text" name="year"></td></tr>
+        <tr><th><label>Note:</label></th><td><input type="text" name="note"></td></tr>
+        <tr><th><label>Location:</label></th><td><input type="text" name="location"></td></tr>
+        <tr><th><label>Performance Date:</label></th><td><input type="text" name="performance_date"></td></tr>
+        <tr><th colspan="2"><button type="submit">CREATE</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

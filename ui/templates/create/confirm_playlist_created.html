@@ -1,0 +1,7 @@
+{% extends "default.html" %}
+{% block title %}Playlist "{{ playlist.get_name() }}" Created{% endblock %}
+{% block header %}Playlist "{{ playlist.get_name() }}" Created{% endblock %}
+{% block content %}
+<img src="{{ playlist.get_thumbnail() }}">
+<p>{{ playlist.get_description() }}</p>
+{% endblock %}

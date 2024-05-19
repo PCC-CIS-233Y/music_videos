@@ -1,0 +1,6 @@
+{% extends "default.html" %}
+{% block title %}Performance video "{{ video.get_title() }}" by {{ video.get_artist() }} Created{% endblock %}
+{% block header %}Performance video "{{ video.get_title() }}" by {{ video.get_artist() }} Created{% endblock %}
+{% block content %}
+<p>{{ video.to_html()|safe }}</p>
+{% endblock %}

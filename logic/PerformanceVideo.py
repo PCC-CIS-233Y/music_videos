@@ -20,6 +20,9 @@ class PerformanceVideo(MusicVideo):
     def get_key(self):
         return f"{self.get_artist()}: {self.get_title()} at {self.__location} on {self.__performance_date}".lower()
 
+    def get_printable_key(self):
+        return f"{self.get_artist()}: {self.get_title()} at {self.__location} on {self.__performance_date}"
+
     @staticmethod
     def make_key(artist, title, location, performance_date):
         return f"{artist}: {title} at {location} on {performance_date}".lower()

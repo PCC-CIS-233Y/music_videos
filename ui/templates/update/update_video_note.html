@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+{% block title %}Select a Video and Update the Note{% endblock %}
+{% block header %}Select a Video and Update the Note:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_update_video_note">
+    <table class="data_entry_form">
+        <tr><th><label>Video:</label></th><td>
+            {% set select_name = "video" %}
+            {% include "select_video.html" %}
+        </td></tr>
+        <tr><th><label>Note:</label></th><td><input type="text" name="note"></td></tr>
+        <tr><th colspan="2"><button type="submit">UPDATE</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "default.html" %}
+{% block title %}Note Updated{% endblock %}
+{% block header %}{{ video.get_printable_key() }} was updated{% endblock %}
+{% block content %}
+<p>The new contents of the video are:</p>
+{{ video.to_html()|safe }}
+{% endblock %}

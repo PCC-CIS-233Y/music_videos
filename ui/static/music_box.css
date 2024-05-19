@@ -1,0 +1,9 @@
+.data_entry_form th {
+    text-align: right;
+}
+.data_entry_form td {
+    text-align: left;
+}
+.data_entry_form {
+    padding: 2em;
+}

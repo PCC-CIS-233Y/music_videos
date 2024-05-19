@@ -1,0 +1,18 @@
+{% extends "default.html" %}
+{% block title %}Join Two Playlists Together{% endblock %}
+{% block header %}Please select two playlists to join:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_join_playlists">
+    <table class="data_entry_form">
+        <tr><th><label>First Playlist:</label></th><td>
+            {% set select_name = "first_playlist" %}
+            {% include "select_playlist.html" %}
+        </td></tr>
+        <tr><th><label>Second Playlist:</label></th><td>
+            {% set select_name = "second_playlist" %}
+            {% include "select_playlist.html" %}
+        </td></tr>
+        <tr><th colspan="2"><button type="submit">JOIN</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

@@ -1,0 +1,5 @@
+<select name="{{ select_name }}">
+    {% for playlist in playlists %}
+    <option value="{{ playlist.get_key() }}">{{ playlist.get_name() }}</option>
+    {% endfor %}
+</select>

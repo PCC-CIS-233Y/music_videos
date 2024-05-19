@@ -1,0 +1,6 @@
+{% extends "default.html" %}
+{% block title %}Music Video "{{ video.get_title() }}" by {{ video.get_artist() }} Created{% endblock %}
+{% block header %}Music Video "{{ video.get_title() }}" by {{ video.get_artist() }} Created{% endblock %}
+{% block content %}
+<p>{{ video.to_html()|safe }}</p>
+{% endblock %}

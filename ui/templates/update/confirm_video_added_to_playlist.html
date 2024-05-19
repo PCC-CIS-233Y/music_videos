@@ -1,0 +1,6 @@
+{% extends "default.html" %}
+{% block title %}Video Added to Playlist{% endblock %}
+{% block header %}Video Added to Playlist{% endblock %}
+{% block content %}
+<p>The video {{ video.get_printable_key() }} was added to the playlist {{ playlist.get_printable_key() }}</p>
+{% endblock %}

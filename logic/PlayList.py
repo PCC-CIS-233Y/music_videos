@@ -38,6 +38,9 @@ class PlayList:
     def get_key(self):
         return self.__name.lower()
 
+    def get_printable_key(self):
+        return self.__name
+
     def get_name(self):
         return self.__name
 

@@ -54,6 +54,9 @@ class MusicVideo:
     def get_key(self):
         return f"{self.__artist}: {self.__title}".lower()
 
+    def get_printable_key(self):
+        return f"{self.__artist}: {self.__title}"
+
     @staticmethod
     def make_key(artist, title):
         return f"{artist}: {title}".lower()

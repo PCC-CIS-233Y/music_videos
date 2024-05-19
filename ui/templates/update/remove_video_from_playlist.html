@@ -1,0 +1,18 @@
+{% extends "default.html" %}
+{% block title %}Remove a Video from a Playlist{% endblock %}
+{% block header %}Select a video and remove it from a playlist:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_remove_video_from_playlist">
+    <table class="data_entry_form">
+        <tr><th><label>Video:</label></th><td>
+            {% set select_name = "video" %}
+            {% include "select_video.html" %}
+        </td></tr>
+        <tr><th><label>Playlist:</label></th><td>
+            {% set select_name = "playlist" %}
+            {% include "select_playlist.html" %}
+        </td></tr>
+        <tr><th colspan="2"><button type="submit">REMOVE</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

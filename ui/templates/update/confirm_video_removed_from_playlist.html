@@ -1,0 +1,6 @@
+{% extends "default.html" %}
+{% block title %}Video Removed from Playlist{% endblock %}
+{% block header %}Video Removed from Playlist{% endblock %}
+{% block content %}
+<p>The video {{ video.get_printable_key() }} was removed from the playlist {{ playlist.get_printable_key() }}</p>
+{% endblock %}

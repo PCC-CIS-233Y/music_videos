@@ -1,0 +1,14 @@
+{% extends "default.html" %}
+{% block title %}Delete a Video{% endblock %}
+{% block header %}Select a video and delete it:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_delete_video">
+    <table class="data_entry_form">
+        <tr><th><label>Video:</label></th><td>
+            {% set select_name = "video" %}
+            {% include "select_video.html" %}
+        </td></tr>
+        <tr><th colspan="2"><button type="submit">DELETE</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

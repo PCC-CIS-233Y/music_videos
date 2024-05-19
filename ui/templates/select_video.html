@@ -1,0 +1,5 @@
+<select name="{{ select_name }}">
+    {% for video in videos %}
+    <option value="{{ video.get_key() }}">{{ video.get_printable_key() }}</option>
+    {% endfor %}
+</select>

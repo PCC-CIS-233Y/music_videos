@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+{% block title %}Playlist "{{ new_playlist.get_name() }}" Created{% endblock %}
+{% block header %}Playlist "{{ new_playlist.get_name() }}" Created{% endblock %}
+{% block content %}
+<p>The existing playlists {{ first_playlist.get_name() }} and {{ second_playlist.get_name() }} were
+    successfully joined to form {{ new_playlist.get_name() }}.</p>
+<img src="{{ new_playlist.get_thumbnail() }}">
+<p>{{ new_playlist.get_description() }}</p>
+<h2>Videos:</h2>
+    <ul>
+    {% for video in new_playlist %}
+    <li>{{ video.to_html()|safe }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
