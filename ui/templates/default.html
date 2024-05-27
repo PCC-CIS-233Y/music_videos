@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="static/music_box.css">
 </head>
 <body>
+{% if "user" in session %}
+<div class="top_button"><a href="/logout">Logout</a></div>
+<div class="top_button">{{ session["user"].get_username() if "user" in session }}</div>
+{% endif %}
 <h1>{% block header %}Default Header{% endblock %}</h1>
 {% block content %}
 <p>Default Content</p>

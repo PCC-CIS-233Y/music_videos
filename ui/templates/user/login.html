@@ -1,0 +1,12 @@
+{% extends "default.html" %}
+{% block title %}Login to Your Account{% endblock %}
+{% block header %}Please enter your account information in the form below:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_login">
+    <table class="data_entry_form">
+        <tr><th><label>Username:</label></th><td><input type="text" name="username"></td></tr>
+        <tr><th><label>Password:</label></th><td><input type="password" name="password"></td></tr>
+        <tr><th colspan="2"><button type="submit">LOGIN</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

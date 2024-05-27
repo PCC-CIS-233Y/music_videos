@@ -1,11 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_session import Session
 from logic.PlayList import PlayList
+import os
+import bcrypt
 
 
 class WebUI:
     __all_videos = None
     __all_playlists = None
     __app = Flask(__name__)
+    ALLOWED_PATHS = [
+        "/login",
+        "/do_login",
+        "/static/music_box.css"
+    ]
     MENU = {
         "Print": {
             "print_playlist?playlist=All%20Videos": "Print a list of all videos.",
@@ -63,10 +71,17 @@ class WebUI:
         return field_value, None
 
     @staticmethod
-    @__app.route('/')
+    @__app.before_request
+    def before_request():
+        if "user" not in session:
+            if request.path not in WebUI.ALLOWED_PATHS:
+                return redirect(url_for("login"))
+
+    @staticmethod
     @__app.route('/index')
     @__app.route('/index.html')
     @__app.route('/index.php')
+    @__app.route('/')
     def homepage():
         return render_template("homepage.html", options=WebUI.MENU)
 
@@ -76,5 +91,18 @@ class WebUI:
         from ui.CreateRoutes import CreateRoutes
         from ui.UpdateRoutes import UpdateRoutes
         from ui.DeleteRoutes import DeleteRoutes
+        from ui.UserRoutes import UserRoutes
 
-        cls.__app.run(host="0.0.0.0", port=8000)
+        if "APPDATA" in os.environ:
+            path = os.environ["APPDATA"]
+        elif "HOME" in os.environ:
+            path = os.environ["HOME"]
+        else:
+            raise Exception("Couldn't find config folder.")
+
+        cls.__app.secret_key = bcrypt.gensalt()
+        cls.__app.config["SESSION_TYPE"] = "filesystem"
+        Session(cls.__app)
+
+        cls.__app.run(host="0.0.0.0", port=8443, ssl_context=(path + "/music_box/cert.pem", path + "/music_box/key.pem"))
+
