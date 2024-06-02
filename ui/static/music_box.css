@@ -7,6 +7,9 @@
 .data_entry_form {
     padding: 2em;
 }
+button {
+    margin: .25em;
+}
 .top_button {
     padding: .5em;
     margin: .2em;

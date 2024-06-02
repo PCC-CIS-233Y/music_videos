@@ -4,42 +4,53 @@ class PlayList:
     __videos = []
     __thumbnail = ""
     __description = ""
-    __map = {}
+    __user_key = ""
 
-    def __init__(self, name, videos, thumbnail, description, save=False):
+    def __init__(self, name, videos, thumbnail, description, user_key, playlist_map, save=False):
         self.__name = name
         self.__videos = videos
         self.__thumbnail = thumbnail
         self.__description = description
-        self.__class__.__map[self.get_key()] = self
+        self.__user_key = user_key
+        playlist_map[self.get_key()] = self
         if save:
             self.save()
 
     @classmethod
-    def build(cls, playlist_dict):
+    def build(cls, playlist_dict, playlist_map, video_map):
         from logic.MusicVideo import MusicVideo
 
         return PlayList(
             playlist_dict["name"],
-            [MusicVideo.lookup(key) for key in playlist_dict["videos"]],
+            [video_map[key] for key in playlist_dict["videos"]],
             playlist_dict["thumbnail"],
-            playlist_dict["description"]
+            playlist_dict["description"],
+            playlist_dict["user_key"],
+            playlist_map
         )
 
     def to_dict(self):
         return {
-            "_id": self.get_key(),
+            "_id": self.get_id(),
             "name": self.__name,
             "thumbnail": self.__thumbnail,
             "description": self.__description,
+            "user_key": self.__user_key,
             "videos": [video.get_key() for video in self.__videos]
         }
+
+    def get_id(self):
+        return f"{self.get_key()}|{self.__user_key}"
 
     def get_key(self):
         return self.__name.lower()
 
     def get_printable_key(self):
         return self.__name
+
+    @staticmethod
+    def make_key(name):
+        return name.lower()
 
     def get_name(self):
         return self.__name
@@ -60,14 +71,6 @@ Videos:
             s += "    " + str(video) + "\n"
         return s
 
-    @classmethod
-    def lookup(cls, key):
-        lower_key = key.lower()
-        if lower_key in cls.__map:
-            return cls.__map[lower_key]
-        else:
-            return None
-
     def append(self, video, save=True):
         from data.Database import Database
 
@@ -83,8 +86,13 @@ Videos:
 
     def delete(self):
         from data.Database import Database
+        from logic.UserState import UserState
 
-        del self.__class__.__map[self.get_key()]
+        playlist_key = self.get_key()
+        user_state = UserState.lookup(self.__user_key)
+        playlist_map = user_state.get_playlist_map()
+        if playlist_key in playlist_map:
+            del playlist_map[playlist_key]
         Database.delete_playlist(self)
 
     def __iter__(self):
@@ -94,10 +102,14 @@ Videos:
         return video in self.__videos
 
     def __add__(self, other):
+        from logic.UserState import UserState
+
         name = f"{self.get_name()}/{other.get_name()}"
         thumbnail = self.get_thumbnail()
         description = self.get_description() + " " + other.get_description()
-        new_playlist = PlayList(name, [], thumbnail, description)
+        user_key = self.__user_key
+        user_state = UserState.lookup(user_key)
+        new_playlist = PlayList(name, [], thumbnail, description, user_key, user_state.get_playlist_map())
         for video in self:
             if video not in new_playlist:
                 new_playlist.append(video, save=False)

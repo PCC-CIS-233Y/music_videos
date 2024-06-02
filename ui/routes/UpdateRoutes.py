@@ -18,7 +18,7 @@ class UpdateRoutes:
         key, error = WebUI.validate_field("The video", "video")
         if key is None:
             return error
-        video = MusicVideo.lookup(key)
+        video = WebUI.lookup_video(key)
         if video is None:
             return render_template(
                 "error.html",
@@ -47,7 +47,7 @@ class UpdateRoutes:
         video_key, error = WebUI.validate_field("The video", "video")
         if video_key is None:
             return error
-        video = MusicVideo.lookup(video_key)
+        video = WebUI.lookup_video(video_key)
         if video is None:
             return render_template(
                 "error.html",
@@ -57,7 +57,7 @@ class UpdateRoutes:
         playlist_key, error = WebUI.validate_field("The playlist name", "playlist")
         if playlist_key is None:
             return error
-        playlist = PlayList.lookup(playlist_key.lower())
+        playlist = WebUI.lookup_playlist(playlist_key.lower())
         if playlist is None:
             return render_template(
                 "error.html",
@@ -88,7 +88,7 @@ class UpdateRoutes:
         video_key, error = WebUI.validate_field("The video", "video")
         if video_key is None:
             return error
-        video = MusicVideo.lookup(video_key)
+        video = WebUI.lookup_video(video_key)
         if video is None:
             return render_template(
                 "error.html",
@@ -98,7 +98,7 @@ class UpdateRoutes:
         playlist_key, error = WebUI.validate_field("The playlist name", "playlist")
         if playlist_key is None:
             return error
-        playlist = PlayList.lookup(playlist_key.lower())
+        playlist = WebUI.lookup_playlist(playlist_key.lower())
         if playlist.get_name() == PlayList.ALL_VIDEOS:
             return render_template(
                 "error.html",

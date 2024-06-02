@@ -6,7 +6,10 @@
     <table class="data_entry_form">
         <tr><th><label>Username:</label></th><td><input type="text" name="username"></td></tr>
         <tr><th><label>Password:</label></th><td><input type="password" name="password"></td></tr>
-        <tr><th colspan="2"><button type="submit">LOGIN</button></th></tr>
+        <tr><th colspan="2">
+            <button type="submit" name="type" value="register">REGISTER</button>
+            <button type="submit" name="type" value="login">LOGIN</button>
+        </th></tr>
     </table>
     </form>
 {% endblock %}

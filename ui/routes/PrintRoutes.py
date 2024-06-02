@@ -20,8 +20,9 @@ class PrintRoutes:
                 message_header="Playlist not specified!",
                 message_body="No playlist was specified. Please check the URL and try again."
             )
-        key = request.args["playlist"]
-        playlist = PlayList.lookup(key)
+        name = request.args["playlist"]
+        key = PlayList.make_key(name)
+        playlist = WebUI.lookup_playlist(key)
         if playlist is None:
             return render_template(
                 "error.html",

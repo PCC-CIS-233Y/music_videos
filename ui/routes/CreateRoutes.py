@@ -19,7 +19,7 @@ class CreateRoutes:
         if name is None:
             return error
         key = name.lower()
-        playlist = PlayList.lookup(key)
+        playlist = WebUI.lookup_playlist(key)
         if playlist is not None:
             return render_template(
                 "error.html",
@@ -34,7 +34,9 @@ class CreateRoutes:
             description = request.form["description"].strip()
         else:
             description = ""
-        playlist = PlayList(name, [], thumbnail, description, save=True)
+        playlist = PlayList(
+            name, [], thumbnail, description, WebUI.get_user_key(), WebUI.get_playlist_map(), save=True
+        )
         WebUI.get_all_playlists().append(playlist)
         return render_template("create/confirm_playlist_created.html", playlist=playlist)
 
@@ -54,7 +56,7 @@ class CreateRoutes:
         if title is None:
             return error
         key = MusicVideo.make_key(artist, title).lower()
-        video = MusicVideo.lookup(key)
+        video = WebUI.lookup_video(key)
         if video is not None:
             return render_template(
                 "error.html",
@@ -72,7 +74,7 @@ class CreateRoutes:
             note = request.form["note"].strip()
         else:
             note = ""
-        video = MusicVideo(artist, title, url, year, note, save=True)
+        video = MusicVideo(artist, title, url, year, note, WebUI.get_user_key(), WebUI.get_video_map(), save=True)
         WebUI.get_all_videos().append(video)
         return render_template("create/confirm_music_video_created.html", video=video)
 
@@ -98,7 +100,7 @@ class CreateRoutes:
         if performance_date is None:
             return error
         key = PerformanceVideo.make_key(artist, title, location, performance_date).lower()
-        video = PerformanceVideo.lookup(key)
+        video = WebUI.lookup_video(key)
         if video is not None:
             return render_template(
                 "error.html",
@@ -116,7 +118,10 @@ class CreateRoutes:
             note = request.form["note"].strip()
         else:
             note = ""
-        video = PerformanceVideo(artist, title, url, year, note, location, performance_date, save=True)
+        video = PerformanceVideo(
+            artist, title, url, year, note, WebUI.get_user_key(), WebUI.get_video_map(),
+            location, performance_date, save=True
+        )
         WebUI.get_all_videos().append(video)
         return render_template("create/confirm_performance_video_created.html", video=video)
 
@@ -134,14 +139,14 @@ class CreateRoutes:
         second_key, error = WebUI.validate_field("The second playlist name", "second_playlist")
         if second_key is None:
             return error
-        first_playlist = PlayList.lookup(first_key.lower())
+        first_playlist = WebUI.lookup_playlist(first_key.lower())
         if first_playlist is None:
             return render_template(
                 "error.html",
                 message_header=f"The playlist {first_key} was not found.",
                 message_body=f"A playlist with the name '{first_key}' was not found. Please choose another playlist and try again."
             )
-        second_playlist = PlayList.lookup(second_key.lower())
+        second_playlist = WebUI.lookup_playlist(second_key.lower())
         if second_playlist is None:
             return render_template(
                 "error.html",
@@ -149,7 +154,7 @@ class CreateRoutes:
                 message_body=f"A playlist with the name '{second_key}' was not found. Please choose another playlist and try again."
             )
         new_key = f"{first_playlist.get_name()}/{second_playlist.get_name()}"
-        new_playlist = PlayList.lookup(new_key.lower())
+        new_playlist = WebUI.lookup_playlist(new_key.lower())
         if new_playlist is not None:
             return render_template(
                 "error.html",

@@ -37,3 +37,14 @@ class User:
 
     def verify_password(self, password):
         return bcrypt.checkpw(password.encode(), self.__hash)
+
+    @staticmethod
+    def hash_password(password):
+        salt = bcrypt.gensalt(13)
+        hash = bcrypt.hashpw(password.encode(), salt)
+        return hash
+
+    def add(self):
+        from data.Database import Database
+
+        Database.add_user(self)

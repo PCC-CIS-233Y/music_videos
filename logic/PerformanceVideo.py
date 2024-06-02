@@ -5,10 +5,10 @@ class PerformanceVideo(MusicVideo):
     __location = ""
     __performance_date = ""
 
-    def __init__(self, artist, title, url, year, note, location, performance_date, save=False):
+    def __init__(self, artist, title, url, year, note, user_key, video_map, location, performance_date, save=False):
         self.__location = location
         self.__performance_date = performance_date
-        super().__init__(artist, title, url, year, note, save=save)
+        super().__init__(artist, title, url, year, note, user_key, video_map, save=save)
 
     def to_dict(self):
         dict = super().to_dict()

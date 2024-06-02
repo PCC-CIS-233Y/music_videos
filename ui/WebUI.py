@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_session import Session
 from logic.PlayList import PlayList
+from logic.UserState import UserState
 import os
 import bcrypt
 
@@ -42,12 +43,66 @@ class WebUI:
         return cls.__app
 
     @classmethod
+    def get_user(cls):
+        if "user" in session:
+            return session["user"]
+        return None
+
+    @classmethod
+    def get_user_key(cls):
+        user = cls.get_user()
+        if user is None:
+            return None
+        return user.get_key()
+
+    @classmethod
     def get_all_playlists(cls):
-        return cls.__all_playlists
+        user_state = UserState.lookup(cls.get_user_key())
+        if user_state is not None:
+            return user_state.get_all_playlists()
+        return None
 
     @classmethod
     def get_all_videos(cls):
-        return cls.__all_videos
+        user_state = UserState.lookup(cls.get_user_key())
+        if user_state is not None:
+            return user_state.get_all_videos()
+        return None
+
+    @classmethod
+    def get_playlist_map(cls):
+        user_state = UserState.lookup(cls.get_user_key())
+        if user_state is not None:
+            return user_state.get_playlist_map()
+        return None
+
+    @classmethod
+    def get_video_map(cls):
+        user_state = UserState.lookup(cls.get_user_key())
+        if user_state is not None:
+            return user_state.get_video_map()
+        return None
+
+    @classmethod
+    def login(cls, user):
+        session["user"] = user
+        UserState(user)
+
+    @classmethod
+    def logout(cls):
+        UserState.logout(WebUI.get_user_key())
+
+    @classmethod
+    def lookup_playlist(cls, key):
+        user_state = UserState.lookup(cls.get_user_key())
+        if user_state is not None:
+            return user_state.lookup_playlist(key)
+
+    @classmethod
+    def lookup_video(cls, key):
+        user_state = UserState.lookup(cls.get_user_key())
+        if user_state is not None:
+            return user_state.lookup_video(key)
 
     @classmethod
     def init(cls):
@@ -76,6 +131,10 @@ class WebUI:
         if "user" not in session:
             if request.path not in WebUI.ALLOWED_PATHS:
                 return redirect(url_for("login"))
+            return
+        user_state = UserState.lookup(WebUI.get_user_key())
+        if user_state is None:
+            UserState(WebUI.get_user())
 
     @staticmethod
     @__app.route('/index')
@@ -87,11 +146,11 @@ class WebUI:
 
     @classmethod
     def run(cls):
-        from ui.PrintRoutes import PrintRoutes
-        from ui.CreateRoutes import CreateRoutes
-        from ui.UpdateRoutes import UpdateRoutes
-        from ui.DeleteRoutes import DeleteRoutes
-        from ui.UserRoutes import UserRoutes
+        from ui.routes.PrintRoutes import PrintRoutes
+        from ui.routes.CreateRoutes import CreateRoutes
+        from ui.routes.UpdateRoutes import UpdateRoutes
+        from ui.routes.DeleteRoutes import DeleteRoutes
+        from ui.routes.UserRoutes import UserRoutes
 
         if "APPDATA" in os.environ:
             path = os.environ["APPDATA"]
