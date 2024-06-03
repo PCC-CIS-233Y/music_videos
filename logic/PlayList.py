@@ -61,6 +61,10 @@ class PlayList:
     def get_description(self):
         return self.__description
 
+    def update_thumbnail(self, thumbnail):
+        self.__thumbnail = thumbnail
+        self.save()
+
     def __str__(self):
         s = f"""Playlist: {self.__name}
 Thumbnail: {self.__thumbnail}, 

@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+{% block title %}Select a PlayList and Update the Thumbnail{% endblock %}
+{% block header %}Select a PlayList and Update the Thumbnail:{% endblock %}
+{% block content %}
+    <form method="POST" action="do_update_playlist_thumbnail">
+    <table class="data_entry_form">
+        <tr><th><label>PlayList:</label></th><td>
+            {% set select_name = "playlist" %}
+            {% include "select_playlist.html" %}
+        </td></tr>
+        <tr><th><label>Thumbnail:</label></th><td><input type="text" name="thumbnail"></td></tr>
+        <tr><th colspan="2"><button type="submit">UPDATE</button></th></tr>
+    </table>
+    </form>
+{% endblock %}

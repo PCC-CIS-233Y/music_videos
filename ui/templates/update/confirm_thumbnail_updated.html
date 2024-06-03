@@ -1,0 +1,7 @@
+{% extends "default.html" %}
+{% block title %}Thumbnail Updated{% endblock %}
+{% block header %}{{ playlist.get_printable_key() }} was updated{% endblock %}
+{% block content %}
+<p>The new contents of the playlist are:</p>
+    {% include "print/playlist_contents.html" %}
+{% endblock %}

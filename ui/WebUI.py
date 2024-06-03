@@ -29,8 +29,9 @@ class WebUI:
         },
         "Update": {
             "update_video_note": "Update the note for a video.",
+            "update_playlist_thumbnail": "Update the thumbnail for a playlist.",
             "add_video_to_playlist": "Add a video to a playlist.",
-            "remove_video_from_playlist": "Remove a video from a playlist.",
+            "remove_video_from_playlist": "Remove a video from a playlist."
         },
         "Delete": {
             "delete_video": "Delete a video.",

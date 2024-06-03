@@ -33,6 +33,31 @@ class UpdateRoutes:
         return render_template("update/confirm_note_updated.html", video=video)
 
     @staticmethod
+    @__app.route('/update_playlist_thumbnail')
+    def update_playlist_thumbnail():
+        return render_template("update/update_playlist_thumbnail.html", playlists=WebUI.get_all_playlists())
+
+    @staticmethod
+    @__app.route('/do_update_playlist_thumbnail', methods=['GET', 'POST'])
+    def do_update_playlist_thumbnail():
+        key, error = WebUI.validate_field("The PLayList", "playlist")
+        if key is None:
+            return error
+        playlist = WebUI.lookup_playlist(key)
+        if playlist is None:
+            return render_template(
+                "error.html",
+                message_header="PlayList does not exist!",
+                message_body=f"The playlist {key} does not exist. Please choose another playlist and try again."
+            )
+        if "thumbnail" in request.form:
+            thumbnail = request.form["thumbnail"].strip()
+        else:
+            thumbnail = ""
+        playlist.update_thumbnail(thumbnail)
+        return render_template("update/confirm_thumbnail_updated.html", playlist=playlist)
+
+    @staticmethod
     @__app.route('/add_video_to_playlist')
     def add_video_to_playlist():
         return render_template(
